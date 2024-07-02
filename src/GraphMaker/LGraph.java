@@ -1,5 +1,6 @@
 package GraphMaker;
 
+import GeneticAlg.Ant;
 import Visualisation.GraphVisualizer;
 import org.graphstream.graph.Graph;
 
@@ -20,35 +21,28 @@ public class LGraph {
     }
 
     /// PUBLIC METHODS ///
-    public LNode randomStep(LNode leftNode){
-        Random rand = new Random();
-        LEdge chosenEdge = isLeftNodeEdges(leftNode)[rand.nextInt(isLeftNodeEdges(leftNode).length-1)];
-        return chosenEdge.getRightNode();
-    }
-
-    public LNode cheapestStep(LNode leftNode){
-        LEdge[] isLeftNodeEdges = isLeftNodeEdges(leftNode);
-        LEdge cheapestEdge = isLeftNodeEdges[0];
-
-        int cost = isLeftNodeEdges[0].getCost();
-
-        if(isLeftNodeEdges.length==1){
-            return cheapestEdge.getRightNode();
-        }
-        else{
-            for (int i = 1; i < isLeftNodeEdges.length; i++) {
-                if (isLeftNodeEdges[i].getCost() < cost) {
-                    cost = isLeftNodeEdges[i].getCost();
-                    cheapestEdge = isLeftNodeEdges[i];
-                }
-            }
-            return cheapestEdge.getRightNode();
-        }
-    }
 
     public void visualizeGraph() {
         Graph graph = GraphVisualizer.visualize(this);
         GraphVisualizer.displayGraph(graph);
+    }
+
+    // get left array of edges where node is left node
+    public LEdge[] isLeftNodeEdges(LNode leftNode){
+        LEdge[] edges = leftNode.edges;
+        LEdge[] isLeftNodeEdges = new LEdge[edges.length];
+        int countEdges = 0;
+        for (int i = 0; i < edges.length; i++) {
+            if (edges[i].getLeftNode()==leftNode){
+                isLeftNodeEdges[countEdges] = edges[i];
+                countEdges++;
+            }
+        }
+        LEdge[] noNullisLeftNodeEdges = new LEdge[countEdges];
+        for (int i = 0; i < countEdges; i++) {
+            noNullisLeftNodeEdges[i] = isLeftNodeEdges[i];
+        }
+        return noNullisLeftNodeEdges;
     }
 
     // Private Methods
@@ -128,24 +122,6 @@ public class LGraph {
 //            System.out.print(" to " + node.edges.length + "\n");
         }
 
-    }
-
-    // get left array of edges where node is left node
-    private LEdge[] isLeftNodeEdges(LNode leftNode){
-        LEdge[] edges = leftNode.edges;
-        LEdge[] isLeftNodeEdges = new LEdge[edges.length];
-        int countEdges = 0;
-        for (int i = 0; i < edges.length; i++) {
-            if (edges[i].getLeftNode()==leftNode){
-                isLeftNodeEdges[countEdges] = edges[i];
-                countEdges++;
-            }
-        }
-        LEdge[] noNullisLeftNodeEdges = new LEdge[countEdges];
-        for (int i = 0; i < countEdges; i++) {
-            noNullisLeftNodeEdges[i] = isLeftNodeEdges[i];
-        }
-        return noNullisLeftNodeEdges;
     }
 
 }
