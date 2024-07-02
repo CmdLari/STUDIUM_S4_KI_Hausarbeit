@@ -1,5 +1,6 @@
 package Visualisation;
 
+import GeneticAlg.Ant;
 import GraphMaker.LGraph;
 import GraphMaker.LEdge;
 import GraphMaker.LNode;
@@ -11,8 +12,10 @@ import java.util.Map;
 
 public class GraphVisualizer {
 
-    public static Graph visualize(LGraph lGraph) {
+    public static Graph visualize(LGraph lGraph, Ant ant) {
         Graph graph = new MultiGraph("LGraph");
+
+        colorWinningRoute(lGraph, ant.visitedEdges, graph);
 
         System.setProperty("org.graphstream.ui.renderer",
                 "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -47,7 +50,13 @@ public class GraphVisualizer {
 
                 // Add edge, allowing multi-edges
                 try {
-                    graph.addEdge(edgeId, node1Id, node2Id).setAttribute("ui.label", edge.getCost());
+                    org.graphstream.graph.Edge graphEdge = graph.addEdge(edgeId, node1Id, node2Id);
+                    graphEdge.setAttribute("ui.label", edge.getCost());
+
+                    // Check for specific edge to color differently
+                    if (edge.hasBeenWalked) {
+                        graphEdge.setAttribute("ui.class", "walked");
+                    }
                 } catch (org.graphstream.graph.EdgeRejectedException e) {
                     System.err.println("Edge rejected: " + edgeId + " [" + node1Id + " -> " + node2Id + "]");
                 }
@@ -83,9 +92,41 @@ public class GraphVisualizer {
                     "   text-mode: normal;" +
                     "   fill-color: gray;" +
                     "   size: 1.5px;" +
+                    "}" +
+                    "edge.walked {" +
+                    "   fill-color: green;" +
+                    "   size: 2px;" +
                     "}";
 
     public static void displayGraph(Graph graph) {
         graph.display();
+    }
+
+    public static void colorWinningRoute(LGraph lGraph, LEdge[] winningRoute, Graph graph) {
+        // Set hasBeenWalked attribute to true for winning route edges
+        for (LEdge lEdge : winningRoute) {
+            lEdge.hasBeenWalked = true;
+        }
+
+        // Update the GraphStream graph to reflect the changes
+        for (LEdge edge : winningRoute) {
+            int leftNodeIndex = findNodeIndex(lGraph, edge.getLeftNode());
+            int rightNodeIndex = findNodeIndex(lGraph, edge.getRightNode());
+
+            if (leftNodeIndex != -1 && rightNodeIndex != -1) {
+                String node1Id = "Node" + leftNodeIndex;
+                String node2Id = "Node" + rightNodeIndex;
+                String edgeKey = node1Id + "-" + node2Id;
+
+                for (org.graphstream.graph.Edge graphEdge : graph.getEachEdge()) {
+                    if (!(graphEdge ==null)){
+                        if ((graphEdge.getNode0().getId().equals(node1Id) && graphEdge.getNode1().getId().equals(node2Id)) ||
+                                (graphEdge.getNode0().getId().equals(node2Id) && graphEdge.getNode1().getId().equals(node1Id))) {
+                            graphEdge.setAttribute("ui.class", "walked");
+                        }
+                    }
+                }
+            }
+        }
     }
 }

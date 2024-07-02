@@ -22,11 +22,6 @@ public class LGraph {
 
     /// PUBLIC METHODS ///
 
-    public void visualizeGraph() {
-        Graph graph = GraphVisualizer.visualize(this);
-        GraphVisualizer.displayGraph(graph);
-    }
-
     // get left array of edges where node is left node
     public LEdge[] isLeftNodeEdges(LNode leftNode){
         LEdge[] edges = leftNode.edges;

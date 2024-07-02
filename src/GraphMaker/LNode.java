@@ -1,10 +1,10 @@
 package GraphMaker;
 
+import java.util.Objects;
+
 public class LNode {
     LEdge[] edges = new LEdge[2];
-
-    public LNode() {
-    }
+    private int value;
 
     public LEdge[] getEdges() {
         return edges;
@@ -57,5 +57,21 @@ public class LNode {
             }
             this.edges = newEdges;
         }
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        LNode lNode = (LNode) obj;
+        return value == lNode.value; // compare relevant fields
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value); // ensure to override hashCode when overriding equals
     }
 }

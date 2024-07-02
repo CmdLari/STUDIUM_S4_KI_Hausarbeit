@@ -7,6 +7,7 @@ public class LEdge {
     LNode rightNode;
     LNode[] nodes = new LNode[2];
     int cost = 0;
+    public boolean hasBeenWalked = false;
 
 
     public LEdge(int MAXEDGECOST){
