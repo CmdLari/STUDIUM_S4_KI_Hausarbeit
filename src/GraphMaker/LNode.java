@@ -66,12 +66,7 @@ public class LNode {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        LNode lNode = (LNode) obj;
-        return value == lNode.value; // compare relevant fields
+        return false; // compare relevant fields
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(value); // ensure to override hashCode when overriding equals
-    }
 }

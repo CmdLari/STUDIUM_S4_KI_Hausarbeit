@@ -103,27 +103,31 @@ public class GraphVisualizer {
     }
 
     public static void colorWinningRoute(LGraph lGraph, LEdge[] winningRoute, Graph graph) {
-        // Set hasBeenWalked attribute to true for winning route edges
-        for (LEdge lEdge : winningRoute) {
-            lEdge.hasBeenWalked = true;
-        }
 
-        // Update the GraphStream graph to reflect the changes
-        for (LEdge edge : winningRoute) {
-            int leftNodeIndex = findNodeIndex(lGraph, edge.getLeftNode());
-            int rightNodeIndex = findNodeIndex(lGraph, edge.getRightNode());
+        if(!(winningRoute == null)){
+            // Set hasBeenWalked attribute to true for winning route edges
+            for (LEdge lEdge : winningRoute) {
+                lEdge.hasBeenWalked = true;
+            }
 
-            if (leftNodeIndex != -1 && rightNodeIndex != -1) {
-                String node1Id = "Node" + leftNodeIndex;
-                String node2Id = "Node" + rightNodeIndex;
-                String edgeKey = node1Id + "-" + node2Id;
+            // Update the GraphStream graph to reflect the changes
+            for (LEdge edge : winningRoute) {
+                int leftNodeIndex = findNodeIndex(lGraph, edge.getLeftNode());
+                int rightNodeIndex = findNodeIndex(lGraph, edge.getRightNode());
 
-                for (org.graphstream.graph.Edge graphEdge : graph.getEachEdge()) {
-                    if (!(graphEdge ==null)){
-                        if ((graphEdge.getNode0().getId().equals(node1Id) && graphEdge.getNode1().getId().equals(node2Id)) ||
-                                (graphEdge.getNode0().getId().equals(node2Id) && graphEdge.getNode1().getId().equals(node1Id))) {
-                            graphEdge.setAttribute("ui.class", "walked");
+                if (leftNodeIndex != -1 && rightNodeIndex != -1) {
+                    String node1Id = "Node" + leftNodeIndex;
+                    String node2Id = "Node" + rightNodeIndex;
+                    String edgeKey = node1Id + "-" + node2Id;
+
+                    for (org.graphstream.graph.Edge graphEdge : graph.getEachEdge()) {
+                        if (!(graphEdge ==null)){
+                            if ((graphEdge.getNode0().getId().equals(node1Id) && graphEdge.getNode1().getId().equals(node2Id)) ||
+                                    (graphEdge.getNode0().getId().equals(node2Id) && graphEdge.getNode1().getId().equals(node1Id))) {
+                                graphEdge.setAttribute("ui.class", "walked");
+                            }
                         }
+
                     }
                 }
             }

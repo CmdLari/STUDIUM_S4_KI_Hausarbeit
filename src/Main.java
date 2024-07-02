@@ -14,8 +14,8 @@ public class Main {
 
         Ant bob = new Ant(lGraph);
 
-        for (int i = 0; i < 5; i++) {
-            bob.randomStep();
+        for (int i = 0; i < 100; i++) {
+            bob.cheapestStep();
         }
         System.out.println("hi");
         bob.cleanWinningRoute();

@@ -39,6 +39,7 @@ public class Ant {
         this.visitedNodes = new LNode[graph.nodes.length];
         this.visitedNodes[0] = currentNode;
         this.visitedNodesIndex = 1;
+        this.visitedEdges = new LEdge[graph.edges.length];
         this.visitedEdgesIndex = 0;
         this.accCost = 0;
     }
@@ -53,6 +54,7 @@ public class Ant {
             this.visitedNodes = parentAnt.visitedNodes;
             this.visitedNodesIndex = parentAnt.visitedNodesIndex;
             this.accCost = parentAnt.accCost;
+            this.visitedEdges = parentAnt.visitedEdges;
             this.visitedEdgesIndex = parentAnt.visitedEdgesIndex;
     }
 
@@ -70,6 +72,7 @@ public class Ant {
                 this.visitedNodesIndex++;
                 alive = true;
                 visitedEdges[visitedEdgesIndex]=isLeftNodeEdges[0];
+                visitedEdgesIndex++;
             }
         }
         else{
@@ -86,6 +89,7 @@ public class Ant {
             }
             if(alive){
                 this.visitedEdges[visitedEdgesIndex]=isLeftNodeEdges[takenEdge];
+                this.visitedEdgesIndex++;
             }
         }
         this.accCost+=minCost;
@@ -109,6 +113,7 @@ public class Ant {
                 this.accCost+=chosenEdge.getCost();
                 stillLooping = false;
                 visitedEdges[visitedEdgesIndex]=chosenEdge;
+                visitedEdgesIndex++;
                 alive = true;
             }
         }
@@ -119,7 +124,7 @@ public class Ant {
 
     private boolean notVisited(LEdge isLeftNodeEdge){
         for (LNode lNode : visitedNodes) {
-            if (lNode.equals(isLeftNodeEdge.getRightNode())){
+            if (!(lNode==null)&&lNode.equals(isLeftNodeEdge.getRightNode())){
                 return false;
             }
         }
@@ -127,16 +132,19 @@ public class Ant {
     }
 
     public void cleanWinningRoute(){
-        int winningRoutelength=0;
-        for(int i = 0; i<visitedEdges.length; i++){
-            if (!(visitedEdges[i] == null)){
-                winningRoutelength++;
+
+        if (!(visitedEdges==null)){
+            int winningRoutelength=0;
+            for (LEdge visitedEdge : visitedEdges) {
+                if (!(visitedEdge == null)) {
+                    winningRoutelength++;
+                }
             }
+            LEdge[] shortenedWinningRoute = new LEdge[winningRoutelength];
+            for(int i = 0; i<winningRoutelength; i++){
+                shortenedWinningRoute[i]=visitedEdges[i];
+            }
+            this.visitedEdges=shortenedWinningRoute;
         }
-        LEdge[] shortenedWinningRoute = new LEdge[winningRoutelength];
-        for(int i = 0; i<winningRoutelength; i++){
-            shortenedWinningRoute[i]=visitedEdges[i];
-        }
-        this.visitedEdges=shortenedWinningRoute;
     }
 }
