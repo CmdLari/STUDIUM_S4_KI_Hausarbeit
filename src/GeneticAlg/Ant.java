@@ -8,6 +8,7 @@ import java.util.Random;
 public class Ant {
 
     public LNode currentNode; //Locatio
+    public LNode startingNode; //To complete the circle
     public int accCost; //Price of the path so far
     public int visitedNodesIndex; //Pointer to next space in node array
     public LNode[] visitedNodes; //Path so far
@@ -25,7 +26,8 @@ public class Ant {
         Random rand = new Random();
         this.graph = graph;
         this.currentNode = graph.nodes[rand.nextInt(0, graph.nodes.length-1)];
-        this.visitedNodes = new LNode[graph.nodes.length];
+        this.startingNode = currentNode;
+        this.visitedNodes = new LNode[graph.nodes.length+1];
         this.visitedNodes[0] = currentNode;
         this.visitedNodesIndex = 1;
         this.visitedEdges = new LEdge[graph.edges.length];
@@ -40,6 +42,7 @@ public class Ant {
     public Ant(Ant parentAnt) {
             this.graph = parentAnt.graph;
             this.currentNode = parentAnt.currentNode;
+            this.startingNode = parentAnt.startingNode;
             this.visitedNodes = parentAnt.visitedNodes;
             this.visitedNodesIndex = parentAnt.visitedNodesIndex;
             this.visitedEdges = parentAnt.visitedEdges;
@@ -52,30 +55,49 @@ public class Ant {
     public void cheapestStep() {
         alive = false;
         LEdge[] edgesToChoseFrom = this.currentNode.getEdges();
-        int cheapest = edgesToChoseFrom[0].getCost();
+        int cheapest =-5;
         LEdge chosenEdge = null;
+        LNode chosenNode = null;
+        LEdge tempEdge = null;
+
         for (LEdge lEdge : edgesToChoseFrom) {
-            if (!checkIfVisited(lEdge) && lEdge.getCost() < cheapest) {
-                cheapest = lEdge.getCost();
-                chosenEdge = lEdge;
-                alive = true;
-            }
-        }
-        if (!(chosenEdge == null)) {
-            for (LNode lNode : chosenEdge.getNodes()) {
-                if (!(lNode.Lequals(this.currentNode))) {
-                    this.currentNode = lNode;
+            if (!(lEdge==null)){
+                if (!checkIfVisitedEdge(lEdge) && (lEdge.getCost() < cheapest || (cheapest==-5))) {
+                    tempEdge = lEdge;
+                    for (LNode lNode : tempEdge.getNodes()) {
+                        if (!(lNode.Lequals(this.currentNode))&&!(checkifVisitedNode(lNode))) {
+                            chosenEdge = lEdge;
+                            cheapest = lEdge.getCost();
+                            chosenNode = lNode;
+                            alive = true;
+                        }
+                        if (checkIfAllowedHome()) {
+                            if(lNode.equals(startingNode)){
+                                chosenEdge = lEdge;
+                                cheapest = lEdge.getCost();
+                                chosenNode = lNode;
+                                alive = true;
+                            }
+                        }
+                    }
                 }
             }
+        }
+        if (alive) {
+            System.out.println("Bob walked "+chosenEdge.toString());
             this.visitedEdges[visitedEdgesIndex] = chosenEdge;
             visitedEdgesIndex++;
+            this.currentNode = chosenNode;
             this.visitedNodes[visitedNodesIndex] = this.currentNode;
-            visitedEdgesIndex++;
+            visitedNodesIndex++;
             this.accCost += chosenEdge.getCost();
+        }
+        else {
+            System.out.println("Bob died!");
         }
     }
 
-    public void cleanWinningRoute(){
+    public void trimEdgesArray(){
         int newEdgeArrayLength = 0;
         for (LEdge lEdge : this.visitedEdges) {
             if(!(lEdge==null)){
@@ -91,50 +113,47 @@ public class Ant {
 
     ///////// PRIVATE //////
 
-    private boolean checkIfVisited(LEdge edge) {
+    private boolean checkIfVisitedEdge(LEdge edge) {
         for (LEdge visitedEdge : visitedEdges) {
-            return visitedEdge.Leguals(edge);
+            if (visitedEdge==null){
+                return false;
+            }
+            if(visitedEdge.equals(edge)){
+                return true;
+            }
         }
         return false;
     }
 
-//    public void cheapestStep(){
-//        alive = false;
-//        LEdge[] isLeftNodeEdges = graph.isLeftNodeEdges(this.currentNode);
-//        int minCost = isLeftNodeEdges[0].getCost();
-//
-//        if(isLeftNodeEdges.length==1){
-//            if(notVisited(isLeftNodeEdges[0])) {
-//                this.currentNode = isLeftNodeEdges[0].getRightNode();
-//                this.visitedNodes[visitedNodesIndex] = currentNode;
-//                this.visitedNodesIndex++;
-//                alive = true;
-//                visitedEdges[visitedEdgesIndex]=isLeftNodeEdges[0];
-//                visitedEdgesIndex++;
-//            }
-//        }
-//        else{
-//            int takenEdge = 0;
-//            for (int i = 1; i < isLeftNodeEdges.length; i++) {
-//                    if (isLeftNodeEdges[i].getCost() < minCost && notVisited(isLeftNodeEdges[i])) {
-//                        minCost = isLeftNodeEdges[i].getCost();
-//                        this.currentNode = isLeftNodeEdges[i].getRightNode();
-//                        this.visitedNodes[visitedNodesIndex]=currentNode;
-//                        this.visitedNodesIndex++;
-//                        alive = true;
-//                        takenEdge = i;
-//                    }
-//            }
-//            if(alive){
-//                this.visitedEdges[visitedEdgesIndex]=isLeftNodeEdges[takenEdge];
-//                this.visitedEdgesIndex++;
-//            }
-//        }
-//        this.accCost+=minCost;
-//        if(!alive){
-//            System.out.println("Ant is dead");
-//        }
-//    }
+    private boolean checkifVisitedNode(LNode node) {
+        for (LNode visitedNode : visitedNodes) {
+            if(visitedNode==null){
+                return false;
+            }
+            if(visitedNode.equals(node)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkIfAllowedHome() {
+        int counter = 0;
+        for (LNode lNode: graph.nodes){
+            for(LNode lNodethis : visitedNodes){
+                if(lNode.equals(lNodethis)){
+                    counter++;
+                }
+            }
+        }
+        if(counter==graph.nodes.length){
+            System.out.println("Found a Queen!");
+            return true;
+        }
+        return false;
+    }
+
+
 //
 //    public void randomStep() {
 //        // This tries up to 5 times to take a step

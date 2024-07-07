@@ -6,7 +6,7 @@ import org.graphstream.graph.Graph;
 public class Main {
     public static void main(String[] args) {
 
-        int MAXNODES = 4;
+        int MAXNODES = 30;
         int MAXEDGES = 50;
         int MAXEDGECOST = 5;
 
@@ -14,13 +14,12 @@ public class Main {
 
         Ant bob = new Ant(lGraph);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             bob.cheapestStep();
         }
-        System.out.println("hi");
-        bob.cleanWinningRoute();
+
+        bob.trimEdgesArray();
         visualizeGraph(lGraph, bob);
-        System.out.println("bye");
 
     }
 

@@ -81,9 +81,11 @@ public class LGraph {
             int nodeTwo = rand.nextInt(0, nodeNumber-1);
             edges[edgePointer].addNode(nodes[nodeOne]);
             nodes[nodeOne].setEdge(edges[edgePointer]);
+            System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[nodeOne].toString());
 
             edges[edgePointer].addNode(nodes[nodeTwo]);
             nodes[nodeTwo].setEdge(edges[edgePointer]);
+            System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[nodeTwo].toString());
             edgePointer++;
         }
     }
