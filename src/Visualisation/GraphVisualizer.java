@@ -31,8 +31,8 @@ public class GraphVisualizer {
         // Add edges to the GraphStream graph
         for (int i = 0; i < lGraph.edges.length; i++) {
             LEdge edge = lGraph.edges[i];
-            LNode leftNode = edge.getLeftNode();
-            LNode rightNode = edge.getRightNode();
+            LNode leftNode = edge.getNodes()[0];
+            LNode rightNode = edge.getNodes()[1];
             int leftNodeIndex = findNodeIndex(lGraph, leftNode);
             int rightNodeIndex = findNodeIndex(lGraph, rightNode);
 
@@ -54,7 +54,7 @@ public class GraphVisualizer {
                     graphEdge.setAttribute("ui.label", edge.getCost());
 
                     // Check for specific edge to color differently
-                    if (edge.hasBeenWalked) {
+                    if (edge.getisInWinningRoute()) {
                         graphEdge.setAttribute("ui.class", "walked");
                     }
                 } catch (org.graphstream.graph.EdgeRejectedException e) {
@@ -107,13 +107,13 @@ public class GraphVisualizer {
         if(!(winningRoute == null)){
             // Set hasBeenWalked attribute to true for winning route edges
             for (LEdge lEdge : winningRoute) {
-                lEdge.hasBeenWalked = true;
+                lEdge.isWinningRoute(true);
             }
 
             // Update the GraphStream graph to reflect the changes
             for (LEdge edge : winningRoute) {
-                int leftNodeIndex = findNodeIndex(lGraph, edge.getLeftNode());
-                int rightNodeIndex = findNodeIndex(lGraph, edge.getRightNode());
+                int leftNodeIndex = findNodeIndex(lGraph, edge.getNodes()[0]);
+                int rightNodeIndex = findNodeIndex(lGraph, edge.getNodes()[1]);
 
                 if (leftNodeIndex != -1 && rightNodeIndex != -1) {
                     String node1Id = "Node" + leftNodeIndex;

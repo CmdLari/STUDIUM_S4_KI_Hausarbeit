@@ -3,40 +3,72 @@ package GraphMaker;
 import java.util.Random;
 
 public class LEdge {
-    LNode leftNode;
-    LNode rightNode;
-    LNode[] nodes = new LNode[2];
-    int cost = 0;
-    public boolean hasBeenWalked = false;
+    LNode[] nodes;
+    int cost;
+    String id;
+    boolean isSet;
+    boolean inWinningRoute;
 
 
-    public LEdge(int MAXEDGECOST){
+    public LEdge(int id, int MAXCOST) {
+        this.nodes = new LNode[2];
+        this.cost = 0;
+        this.id = "Edge: "+id;
         Random rand = new Random();
-        this.cost = rand.nextInt(1, MAXEDGECOST);
-    };
+        this.cost = rand.nextInt(1, MAXCOST);
+        this.isSet = false;
+        this.inWinningRoute = false;
+    }
 
-    public LNode getLeftNode(){
-        return leftNode;
-    };
+    ///////// PUBLIC ////////
 
-    public LNode getRightNode(){
-        return rightNode;
-    };
+    public String getID() {
+        return id;
+    }
+
+    public LNode[] getNodes() {
+        return nodes;
+    }
+
+    public void addNode(LNode node) {
+        int placement = checkAvailability();
+        if (!(placement == 99)) {
+            nodes[placement] = node;
+        }
+    }
+
+    public boolean eguals(LEdge lEdge) {
+        return this.id.equals(lEdge.id);
+    }
+
+    public boolean isSet() {
+        return isSet;
+    }
+
+    public String toString(){
+        return "Edge "+id+"(cost: "+cost+")";
+    }
+
+    public void isWinningRoute(Boolean bool) {
+        this.inWinningRoute = bool;
+    }
+
+    public boolean getisInWinningRoute(){
+        return inWinningRoute;
+    }
 
     public int getCost(){
         return cost;
     }
 
-    public LNode[] getNodes(){
-        return nodes;
-    };
+    ///////// PRIVATE ///////
 
-    public void  setLeftNode(LNode leftNode) {
-        this.leftNode = leftNode;
-        nodes[0] = leftNode;
-    }
-    public void setRightNode(LNode rightNode) {
-        this.rightNode = rightNode;
-        nodes[1] = rightNode;
+    private int checkAvailability() {
+        for (int i = 0; i < nodes.length; i++) {
+            if (nodes[i] == null) {
+                return i;
+            }
+        }
+        return 99;
     }
 }
