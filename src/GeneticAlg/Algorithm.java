@@ -10,6 +10,7 @@ public class Algorithm {
     LGraph graph;
     int populationSize;
     int generationCount;
+    int generationNr;
     Ant[] population;
 
 
@@ -24,13 +25,38 @@ public class Algorithm {
         this.graph = graph;
         this.populationSize = populationSize;
         this.generationCount = generationCount;
+        this.generationNr = 0;
         this.population = new Ant[populationSize];
+        generateInitialPopulation();
     }
 
     ///////// PUBLIC ////////
 
+    public Ant procreate(){
+        for (int i = 0; i < generationCount; i++) {
+            System.out.println("Generation " + generationNr);
+            thePopulationMarches();
+            generateNextGopulation();
+        }
+
+        /// REFINE LATER
+        for (int i = 0; i < populationSize; i++) {
+            if(population[i].isQueen()){
+                System.out.println("THE QUEEN RULES!");
+                return population[i];
+            }
+        }
+        return null;
+    }
+
 
     ///////// PRIVATE ///////
+
+    private void thePopulationMarches(){
+        for(int i = 0; i < populationSize; i++){
+            population[i].randomStep();
+        }
+    }
 
     private void generateInitialPopulation() {
         for (int i = 0; i < populationSize; i++) {
@@ -43,10 +69,16 @@ public class Algorithm {
         int numberOfParents = (int) (populationSize * selectionRate);
         Ant[] parents = selectParents();
         Ant[] newGeneration = new Ant[populationSize];
+        int parentIndex = 0;
         for (int i = 0; i < populationSize; i++) {
-
+            Ant child = new Ant(parents[parentIndex], generationNr);
+            newGeneration[i] = parents[parentIndex];
+            parentIndex++;
+            if (parentIndex == numberOfParents) {
+                parentIndex = 0;
+            }
         }
-
+        generationNr++;
     }
 
     private Ant[] selectParents() {

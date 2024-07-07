@@ -15,7 +15,9 @@ public class GraphVisualizer {
     public static Graph visualize(LGraph lGraph, Ant ant) {
         Graph graph = new MultiGraph("LGraph");
 
-        colorWinningRoute(lGraph, ant.getVisitedEdges(), graph);
+        if(ant!=null) {
+            colorWinningRoute(lGraph, ant.getVisitedEdges(), graph);
+        }
 
         System.setProperty("org.graphstream.ui.renderer",
                 "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -103,7 +105,6 @@ public class GraphVisualizer {
     }
 
     public static void colorWinningRoute(LGraph lGraph, LEdge[] winningRoute, Graph graph) {
-
         if(!(winningRoute == null)){
             // Set hasBeenWalked attribute to true for winning route edges
             for (LEdge lEdge : winningRoute) {

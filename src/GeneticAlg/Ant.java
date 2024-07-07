@@ -17,6 +17,7 @@ public class Ant {
     private boolean alive = true; //Is the ant stuck?
     private LGraph graph;
     private String id;
+    private boolean isQueen = false;
 
     /**
      * Initial unit to start traversing the graph
@@ -86,6 +87,42 @@ public class Ant {
                 }
             }
         }
+        updateAnt(chosenEdge, chosenNode);
+    }
+
+    public void randomStep(){
+        Random rand = new Random();
+        alive = false;
+        LEdge[] edgesToChoseFrom = this.currentNode.getEdges();
+        LEdge chosenEdge = null;
+        LNode chosenNode = null;
+        LEdge tempEdge;
+        boolean foundOne = false;
+        while (!foundOne){
+            int picker = rand.nextInt(edgesToChoseFrom.length-1);
+            if (!checkIfVisitedEdge(edgesToChoseFrom[picker])&&(edgesToChoseFrom[picker]!=null)) {
+                tempEdge = edgesToChoseFrom[picker];
+                for (LNode lNode : tempEdge.getNodes()) {
+                    if (!(lNode.Lequals(this.currentNode))&&!(checkifVisitedNode(lNode))) {
+                        chosenEdge = edgesToChoseFrom[picker];
+                        chosenNode = lNode;
+                        alive = true;
+                        foundOne = true;
+                    }
+                    if (checkIfAllowedHome()) {
+                        if(lNode.equals(startingNode)){
+                            chosenEdge = edgesToChoseFrom[picker];
+                            alive = true;
+                            foundOne = true;
+                        }
+                    }
+                }
+            }
+        }
+        updateAnt(chosenEdge, chosenNode);
+    }
+
+    private void updateAnt(LEdge chosenEdge, LNode chosenNode) {
         if (alive) {
             System.out.println("Bob walked "+chosenEdge.toString());
             this.visitedEdges[visitedEdgesIndex] = chosenEdge;
@@ -126,6 +163,10 @@ public class Ant {
         return alive;
     }
 
+    public boolean isQueen(){
+        return isQueen;
+    }
+
     ///////// PRIVATE //////
 
     private boolean checkIfVisitedEdge(LEdge edge) {
@@ -163,6 +204,7 @@ public class Ant {
         }
         if(counter==graph.nodes.length){
             System.out.println("Found a Queen!");
+            isQueen = true;
             return true;
         }
         return false;

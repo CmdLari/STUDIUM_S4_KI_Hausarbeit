@@ -1,3 +1,4 @@
+import GeneticAlg.Algorithm;
 import GeneticAlg.Ant;
 import GraphMaker.LGraph;
 import Visualisation.GraphVisualizer;
@@ -6,21 +7,24 @@ import org.graphstream.graph.Graph;
 public class Main {
     public static void main(String[] args) {
 
-        int MAXNODES = 30;
+        int MAXNODES = 4;
         int MAXEDGES = 50;
         int MAXEDGECOST = 5;
 
         LGraph lGraph = new LGraph(MAXNODES, MAXEDGES, MAXEDGECOST);
 
-        Ant bob = new Ant(lGraph, 1);
+        Algorithm algorithm = new Algorithm(0.5, lGraph, 100, 10);
 
-        for (int i = 0; i < 200; i++) {
-            bob.cheapestStep();
+        Ant potentialQueen = algorithm.procreate();
+
+        if (potentialQueen == null) {
+            System.out.println("Sucks!");
+            visualizeGraph(lGraph, potentialQueen);
         }
-
-        bob.trimEdgesArray();
-        visualizeGraph(lGraph, bob);
-
+        else {
+            potentialQueen.trimEdgesArray();
+            visualizeGraph(lGraph, potentialQueen);
+        }
     }
 
     private static void visualizeGraph(LGraph lGraph, Ant ant) {
