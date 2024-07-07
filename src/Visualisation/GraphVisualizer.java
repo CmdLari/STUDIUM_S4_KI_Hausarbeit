@@ -15,7 +15,7 @@ public class GraphVisualizer {
     public static Graph visualize(LGraph lGraph, Ant ant) {
         Graph graph = new MultiGraph("LGraph");
 
-        colorWinningRoute(lGraph, ant.visitedEdges, graph);
+        colorWinningRoute(lGraph, ant.getVisitedEdges(), graph);
 
         System.setProperty("org.graphstream.ui.renderer",
                 "org.graphstream.ui.j2dviewer.J2DGraphRenderer");

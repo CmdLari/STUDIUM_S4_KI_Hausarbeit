@@ -7,22 +7,23 @@ import java.util.Random;
 
 public class Ant {
 
-    public LNode currentNode; //Locatio
-    public LNode startingNode; //To complete the circle
-    public int accCost; //Price of the path so far
-    public int visitedNodesIndex; //Pointer to next space in node array
-    public LNode[] visitedNodes; //Path so far
-    int visitedEdgesIndex; //Pointer to next space in edges array
-    public LEdge[] visitedEdges; //Path so far
-    public boolean alive = true; //Is the ant stuck?
-    LGraph graph;
+    private LNode currentNode; //Locatio
+    private final LNode startingNode; //To complete the circle
+    private int accCost; //Price of the path so far
+    private int visitedNodesIndex; //Pointer to next space in node array
+    private LNode[] visitedNodes; //Path so far
+    private int visitedEdgesIndex; //Pointer to next space in edges array
+    private LEdge[] visitedEdges; //Path so far
+    private boolean alive = true; //Is the ant stuck?
+    private LGraph graph;
+    private String id;
 
     /**
      * Initial unit to start traversing the graph
      * initial costs: 0, initial starting node: Random
      * @param graph The graph to be traversed
      */
-    public Ant(LGraph graph) {
+    public Ant(LGraph graph, int id) {
         Random rand = new Random();
         this.graph = graph;
         this.currentNode = graph.nodes[rand.nextInt(0, graph.nodes.length-1)];
@@ -33,13 +34,14 @@ public class Ant {
         this.visitedEdges = new LEdge[graph.edges.length];
         this.visitedEdgesIndex = 0;
         this.accCost = 0;
+        this.id = "Ant: "+"id";
     }
 
     /**
      * Ant that isn't 1st gen
      * @param parentAnt The parent ant
      */
-    public Ant(Ant parentAnt) {
+    public Ant(Ant parentAnt, int generation) {
             this.graph = parentAnt.graph;
             this.currentNode = parentAnt.currentNode;
             this.startingNode = parentAnt.startingNode;
@@ -48,6 +50,7 @@ public class Ant {
             this.visitedEdges = parentAnt.visitedEdges;
             this.visitedEdgesIndex = parentAnt.visitedEdgesIndex;
             this.accCost = parentAnt.accCost;
+            this.id = parentAnt.id + "_" + generation;
     }
 
     ///////// PUBLIC ////////
@@ -58,7 +61,7 @@ public class Ant {
         int cheapest =-5;
         LEdge chosenEdge = null;
         LNode chosenNode = null;
-        LEdge tempEdge = null;
+        LEdge tempEdge;
 
         for (LEdge lEdge : edgesToChoseFrom) {
             if (!(lEdge==null)){
@@ -111,6 +114,18 @@ public class Ant {
         visitedEdges = newEdges;
     }
 
+    public int getAccCost(){
+        return accCost;
+    }
+
+    public LEdge[] getVisitedEdges() {
+        return visitedEdges;
+    }
+
+    public boolean isAlive(){
+        return alive;
+    }
+
     ///////// PRIVATE //////
 
     private boolean checkIfVisitedEdge(LEdge edge) {
@@ -152,56 +167,4 @@ public class Ant {
         }
         return false;
     }
-
-
-//
-//    public void randomStep() {
-//        // This tries up to 5 times to take a step
-//        alive = false;
-//        Random rand = new Random();
-//        LEdge[] isLeftNodeEdges = graph.isLeftNodeEdges(this.currentNode);
-//        boolean stillLooping = true;
-//        for(int i = 0; i<5 && i<isLeftNodeEdges.length-1; i++){
-//            LEdge chosenEdge = isLeftNodeEdges[rand.nextInt(isLeftNodeEdges.length - 1)];
-//            if(notVisited(isLeftNodeEdges[i])&& stillLooping){
-//                this.currentNode = chosenEdge.getRightNode();
-//                this.visitedNodes[visitedNodesIndex]=currentNode;
-//                this.visitedNodesIndex++;
-//                this.accCost+=chosenEdge.getCost();
-//                stillLooping = false;
-//                visitedEdges[visitedEdgesIndex]=chosenEdge;
-//                visitedEdgesIndex++;
-//                alive = true;
-//            }
-//        }
-//        if(!alive){
-//            System.out.println("Ant is dead");
-//        }
-//    }
-//
-//    private boolean notVisited(LEdge isLeftNodeEdge){
-//        for (LNode lNode : visitedNodes) {
-//            if (!(lNode==null)&&lNode.equals(isLeftNodeEdge.getRightNode())){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//
-//    public void cleanWinningRoute(){
-//
-//        if (!(visitedEdges==null)){
-//            int winningRoutelength=0;
-//            for (LEdge visitedEdge : visitedEdges) {
-//                if (!(visitedEdge == null)) {
-//                    winningRoutelength++;
-//                }
-//            }
-//            LEdge[] shortenedWinningRoute = new LEdge[winningRoutelength];
-//            for(int i = 0; i<winningRoutelength; i++){
-//                shortenedWinningRoute[i]=visitedEdges[i];
-//            }
-//            this.visitedEdges=shortenedWinningRoute;
-//        }
-//    }
 }

@@ -34,7 +34,7 @@ public class LNode {
     }
 
 
-    ///////// PUBLIC ////////
+    ///////// PRIVATE ///////
 
     private void checkEdgeArray(){
         int counter = 0;

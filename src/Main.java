@@ -12,7 +12,7 @@ public class Main {
 
         LGraph lGraph = new LGraph(MAXNODES, MAXEDGES, MAXEDGECOST);
 
-        Ant bob = new Ant(lGraph);
+        Ant bob = new Ant(lGraph, 1);
 
         for (int i = 0; i < 200; i++) {
             bob.cheapestStep();
