@@ -37,7 +37,10 @@ public class LEdge {
         }
     }
 
-    public boolean eguals(LEdge lEdge) {
+    public boolean Leguals(LEdge lEdge) {
+        if (lEdge==null){
+            return false;
+        }
         return this.id.equals(lEdge.id);
     }
 
@@ -46,7 +49,7 @@ public class LEdge {
     }
 
     public String toString(){
-        return "Edge "+id+"(cost: "+cost+")";
+        return id+"(cost: "+cost+")";
     }
 
     public void isWinningRoute(Boolean bool) {

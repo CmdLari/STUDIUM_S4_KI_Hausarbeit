@@ -23,10 +23,9 @@ public class LNode {
         checkEdgeArray();
         int placement = checkAvailability();
         edges[placement] = lEdge;
-        clearEdges();
     }
 
-    public boolean equals(LNode lNode){
+    public boolean Lequals(LNode lNode){
         return this.id.equals(lNode.id);
     }
 
@@ -35,12 +34,12 @@ public class LNode {
     }
 
 
-    ///////// PRIVATE ///////
+    ///////// PUBLIC ////////
 
     private void checkEdgeArray(){
         int counter = 0;
         for (LEdge edge : edges) {
-            if (edge == null) {
+            if (!(edge == null)) {
                 counter++;
             }
         }
@@ -63,20 +62,4 @@ public class LNode {
         return counter;
     }
 
-    public void clearEdges() {
-        int nullCounter = 0;
-
-        for (LEdge lEdge : edges) {
-            if (lEdge == null) {
-                nullCounter++;
-            }
-        }
-        if (nullCounter > 0) {
-            LEdge[] newEdges = new LEdge[edges.length-nullCounter];
-            for (int i = 0; i < newEdges.length; i++) {
-                newEdges[i] = edges[i];
-            }
-            this.edges = newEdges;
-        }
-    }
 }

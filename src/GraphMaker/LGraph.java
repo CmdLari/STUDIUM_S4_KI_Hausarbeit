@@ -24,10 +24,12 @@ public class LGraph {
     private void generateGraph(int MAXNODES, int MAXEDGES, int MAXEDGECOST) {
         Random rand = new Random();
 
+        System.out.println("INITIALIZING GRAPH");
+
         // How many nodes?
         int nodeNumber = rand.nextInt(3, MAXNODES);
         nodes = new LNode[nodeNumber];
-        System.out.println("\nNumber of Nodes: " + nodeNumber);
+        System.out.println("Number of Nodes: " + nodeNumber);
 
         // create nodes
         for (int i = 0; i < nodeNumber; i++) {
@@ -38,59 +40,51 @@ public class LGraph {
         // How many edges?
         int edgeNumber = rand.nextInt(nodeNumber, MAXEDGES);
         edges = new LEdge[edgeNumber];
-        System.out.println("\nNumber of Edges: " + edgeNumber);
+        System.out.println("Number of Edges: " + edgeNumber);
 
         // create edges
         for (int i = 0; i < edgeNumber; i++) {
             LEdge newEdge = new LEdge(i, MAXEDGECOST);
             edges[i] = newEdge;
         }
+
+        // connect edges and nodes
+
+        int edgePointer = 0;
+        System.out.print("\n");
+
+        // // Initialize chain
+        edges[edgePointer].addNode(nodes[edgePointer]);
+        nodes[edgePointer].setEdge(edges[edgePointer]);
+        System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[edgePointer].toString());
+
+        // // Ensure there is at least one functional route
+        for (edgePointer=1; edgePointer < nodeNumber; edgePointer++) {
+            edges[edgePointer-1].addNode(nodes[edgePointer]);
+            nodes[edgePointer].setEdge(edges[edgePointer-1]);
+            System.out.println("Connected: "+edges[edgePointer-1].toString()+" with "+nodes[edgePointer].toString());
+
+            edges[edgePointer].addNode(nodes[edgePointer]);
+            nodes[edgePointer].setEdge(edges[edgePointer]);
+            System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[edgePointer].toString());
+
+            if (edgePointer==nodeNumber-1) {
+                edges[edgePointer].addNode(nodes[0]);
+                nodes[0].setEdge(edges[edgePointer]);
+                System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[0].toString());
+            }
+        }
+
+        // // Insert the remaining edges
+        while (edgePointer < edgeNumber) {
+            int nodeOne = rand.nextInt(0, nodeNumber-1);
+            int nodeTwo = rand.nextInt(0, nodeNumber-1);
+            edges[edgePointer].addNode(nodes[nodeOne]);
+            nodes[nodeOne].setEdge(edges[edgePointer]);
+
+            edges[edgePointer].addNode(nodes[nodeTwo]);
+            nodes[nodeTwo].setEdge(edges[edgePointer]);
+            edgePointer++;
+        }
     }
-
-//        // connect edges and nodes
-//        int pointer = 0;
-//
-//        // connect all nodes in an initial circle
-//        while (pointer < nodeNumber-1) {
-//            LNode[] visitedNodes = new LNode[nodeNumber];
-//
-//            pointer++;
-//        }
-//        // close the circle
-//        if (pointer == nodeNumber-1) {
-//            nodes[pointer].setEdge(edges[pointer]);
-//            edges[pointer].setLeftNode(nodes[pointer]);
-//            edges[pointer].setRightNode(nodes[0]);
-//            nodes[0].setEdge(edges[pointer]);
-//            System.out.println("\nConnected: "+pointer+" with "+0+" | Cost: "+edges[pointer].getCost());
-//            pointer++;
-//        }
-//
-//        // set random edges
-//        Random randEdge = new Random();
-//        while (pointer < edgeNumber) {
-//            int i = randEdge.nextInt(0, nodeNumber);
-//            edges[pointer].setLeftNode(nodes[i]);
-//            nodes[i].setEdge(edges[pointer]);
-//            int j = randEdge.nextInt(0, nodeNumber);
-//            if (i==j && i<nodeNumber-1){
-//                j = j+1;
-//            } else if (i==j && i==nodeNumber-1){
-//                j = 0;
-//            }
-//            edges[pointer].setRightNode(nodes[j]);
-//            nodes[j].setEdge(edges[pointer]);
-//            System.out.println("\nConnected: "+i+" with "+j+" | Cost: "+edges[pointer].getCost());
-//            pointer++;
-//        }
-//
-//        // clear up edge lists of nodes
-//        for (LNode node : nodes) {
-////            System.out.print("\n" + node.edges.length);
-//            node.clearEdges();
-////            System.out.print(" to " + node.edges.length + "\n");
-//        }
-//
-//    }
-
 }

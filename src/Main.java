@@ -6,7 +6,7 @@ import org.graphstream.graph.Graph;
 public class Main {
     public static void main(String[] args) {
 
-        int MAXNODES = 15;
+        int MAXNODES = 4;
         int MAXEDGES = 50;
         int MAXEDGECOST = 5;
 
