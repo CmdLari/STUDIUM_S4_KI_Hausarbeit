@@ -15,7 +15,7 @@ public class GraphVisualizer {
     public static Graph visualize(LGraph lGraph, Ant ant) {
         Graph graph = new MultiGraph("LGraph");
 
-        if(ant!=null) {
+        if (ant != null) {
             colorWinningRoute(lGraph, ant.getVisitedEdges(), graph);
         }
 
@@ -55,9 +55,11 @@ public class GraphVisualizer {
                     org.graphstream.graph.Edge graphEdge = graph.addEdge(edgeId, node1Id, node2Id);
                     graphEdge.setAttribute("ui.label", edge.getCost());
 
-                    // Check for specific edge to color differently
+                    // Set color based on edge attributes
                     if (edge.getisInWinningRoute()) {
                         graphEdge.setAttribute("ui.class", "walked");
+                    } else if (edge.hasBeenTried()) {
+                        graphEdge.setAttribute("ui.class", "tried");
                     }
                 } catch (org.graphstream.graph.EdgeRejectedException e) {
                     System.err.println("Edge rejected: " + edgeId + " [" + node1Id + " -> " + node2Id + "]");
@@ -98,6 +100,10 @@ public class GraphVisualizer {
                     "edge.walked {" +
                     "   fill-color: green;" +
                     "   size: 2px;" +
+                    "}" +
+                    "edge.tried {" +
+                    "   fill-color: red;" +
+                    "   size: 1.5px;" +
                     "}";
 
     public static void displayGraph(Graph graph) {
@@ -105,7 +111,7 @@ public class GraphVisualizer {
     }
 
     public static void colorWinningRoute(LGraph lGraph, LEdge[] winningRoute, Graph graph) {
-        if(!(winningRoute == null)){
+        if (winningRoute != null) {
             // Set hasBeenWalked attribute to true for winning route edges
             for (LEdge lEdge : winningRoute) {
                 lEdge.isWinningRoute(true);
@@ -122,7 +128,7 @@ public class GraphVisualizer {
                     String edgeKey = node1Id + "-" + node2Id;
 
                     for (org.graphstream.graph.Edge graphEdge : graph.getEachEdge()) {
-                        if (!(graphEdge ==null)){
+                        if (graphEdge != null) {
                             if ((graphEdge.getNode0().getId().equals(node1Id) && graphEdge.getNode1().getId().equals(node2Id)) ||
                                     (graphEdge.getNode0().getId().equals(node2Id) && graphEdge.getNode1().getId().equals(node1Id))) {
                                 graphEdge.setAttribute("ui.class", "walked");

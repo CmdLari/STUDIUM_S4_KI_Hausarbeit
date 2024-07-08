@@ -25,7 +25,8 @@ public class LNode {
         edges[placement] = lEdge;
     }
 
-    public boolean Lequals(LNode lNode){
+    public boolean equals(LNode lNode){
+        if (lNode ==null) return false;
         return this.id.equals(lNode.id);
     }
 

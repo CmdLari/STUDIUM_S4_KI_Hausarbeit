@@ -8,16 +8,17 @@ public class LEdge {
     String id;
     boolean isSet;
     boolean inWinningRoute;
-
+    boolean hasBeenTried; // New attribute
 
     public LEdge(int id, int MAXCOST) {
         this.nodes = new LNode[2];
         this.cost = 0;
-        this.id = "Edge: "+id;
+        this.id = "Edge: " + id;
         Random rand = new Random();
         this.cost = rand.nextInt(1, MAXCOST);
         this.isSet = false;
         this.inWinningRoute = false;
+        this.hasBeenTried = false; // For visualisation only
     }
 
     ///////// PUBLIC ////////
@@ -38,7 +39,7 @@ public class LEdge {
     }
 
     public boolean Leguals(LEdge lEdge) {
-        if (lEdge==null){
+        if (lEdge == null) {
             return false;
         }
         return this.id.equals(lEdge.id);
@@ -48,20 +49,28 @@ public class LEdge {
         return isSet;
     }
 
-    public String toString(){
-        return id+"(cost: "+cost+")";
+    public String toString() {
+        return id + "(cost: " + cost + ")";
     }
 
     public void isWinningRoute(Boolean bool) {
         this.inWinningRoute = bool;
     }
 
-    public boolean getisInWinningRoute(){
+    public boolean getisInWinningRoute() {
         return inWinningRoute;
     }
 
-    public int getCost(){
+    public int getCost() {
         return cost;
+    }
+
+    public void markAsTried() {
+        this.hasBeenTried = true;
+    }
+
+    public boolean hasBeenTried() {
+        return hasBeenTried;
     }
 
     ///////// PRIVATE ///////

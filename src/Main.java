@@ -9,23 +9,24 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 
-        int MAXNODES = 4;
-        int MAXEDGES = 10;
-        int MAXEDGECOST = 5;
+        int MAXNODES = 40;
+        int MAXEDGES = 100;
+        int MAXEDGECOST = 10;
 
         LGraph lGraph = new LGraph(MAXNODES, MAXEDGES, MAXEDGECOST);
 
-        Algorithm algorithm = new Algorithm(0.5, lGraph, 5, 3);
+        Algorithm algorithm = new Algorithm(0.5, lGraph, 100, 100);
 
         Ant potentialQueen = algorithm.procreate();
 
         if (potentialQueen == null) {
-            System.out.println("Sucks!");
+            System.out.println("          No path was found!");
             visualizeGraph(lGraph, null);
         }
         else {
             potentialQueen.trimEdgesArray();
-            System.out.println("The colony found a route! Cost: "+potentialQueen.getAccCost()+", "+ Arrays.toString(potentialQueen.getVisitedEdges()));
+            System.out.println("\n          ~+*+~+*+~+*+~+*+~*~+*+~*~+*+~*~+*+~*+~");
+            System.out.println("          The colony found a route! Cost: "+potentialQueen.getAccCost()+", "+ Arrays.toString(potentialQueen.getVisitedEdges()));
             visualizeGraph(lGraph, potentialQueen);
         }
     }
