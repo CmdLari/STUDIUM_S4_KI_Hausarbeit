@@ -3,7 +3,6 @@ package GeneticAlg;
 import GraphMaker.LGraph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -16,6 +15,13 @@ public class Algorithm {
     Ant[] population;
     List<Ant> queens;
 
+    // INITIAL POPULATION: SET AT RANDOM
+    // // POPULATION WALKS UNTIL ALL HAVE COMPLETED THE ROUTE OR ARE DEAD
+    // FOLLOWING GENERATIONS: SELECT REPRODUCING UNITS FITNESS BASED (COST/DISTANCE IN THIS CASE)
+    // // SELECT FROM COMPLETED ONES
+    // FACTORS TO INHERIT:
+    // //
+
     public Algorithm(double selectionRate, LGraph graph, int populationSize, int generationCount) {
         this.selectionRate = selectionRate;
         this.graph = graph;
@@ -25,46 +31,29 @@ public class Algorithm {
         this.population = new Ant[populationSize];
         this.queens = new ArrayList<>();
         generateInitialPopulation();
+        letThemMarch();
+        if (generationNr <= generationCount){
+            genAlg();
+        }
     }
 
     /////// PUBLIC ////////
 
-    public Ant procreate() {
-        for (int i = 0; i < generationCount; i++) {
-            System.out.println("\n          :::::GENERATION " + generationNr);
-            thePopulationMarches();
-            for (int j = 0; j < populationSize; j++) {
-                if (this.population[j].isQueen()) {
-                    updateQueens(this.population[j]);
-                }
-            }
-            generateNextPopulation();
-        }
-
-        queens = queens.stream().sorted(Comparator.comparingInt(Ant::getAccCost)).toList();
-
-        if (!queens.isEmpty()) {
-            System.out.println("          The competing queens ("+queens.size()+"): ");
-            for (Ant queen : queens) {
-                System.out.print("          Queen: "+queen.getid()+", Cost: "+queen.getAccCost());
-            }
-            return queens.get(0);
-        } else {
-            return null;
-        }
+    public List<Ant> getQueens() {
+        return queens;
     }
 
 
     ///////// PRIVATE ///////
 
-    private void updateQueens(Ant queen) {
-        this.queens.add(queen);
-    }
-
-    private void thePopulationMarches() {
-        for (int i = 0; i < populationSize; i++) {
-            population[i].randomStep();
+    private void genAlg(){
+            generateNextPopulation();
+        for (Ant ant : population){
+            if(ant.isQueen()){
+                queens.add(ant);
+            }
         }
+        generationNr++;
     }
 
     private void generateInitialPopulation() {
@@ -74,44 +63,50 @@ public class Algorithm {
         }
     }
 
+    private void letThemMarch() {
+        for (Ant ant : population){
+            for (int i = 0; i <= graph.nodes.length; i++) {
+                ant.randomStep();
+            }
+        }
+        for (Ant ant : population){
+            if(ant.isQueen()){
+                queens.add(ant);
+            }
+        }
+
+    }
+
     private void generateNextPopulation() {
-        generationNr++;
-        int numberOfParents = Math.min((int) (populationSize * selectionRate), population.length);
         Ant[] parents = selectParents();
+
+        int numberOfParents = Math.min((int) (populationSize * selectionRate), populationSize);
         if (parents.length == 0) {
             System.out.println("          No parents were selected. The path is either complete, or all ants have died.");
             return;
         }
 
-        numberOfParents = Math.min(numberOfParents, parents.length);
-
-        Ant[] newGeneration = new Ant[populationSize];
+        Ant[] newPopulation = new Ant[populationSize];
+        int parentCounter = 0;
 
         for (int i = 0; i < populationSize; i++) {
-            if (parents[i % numberOfParents] != null) {
-                Ant child = new Ant(parents[i % numberOfParents], generationNr+i);
-                newGeneration[i] = child;
+            newPopulation[i] = new Ant(parents[parentCounter], parents[parentCounter+1], generationNr);
+            parentCounter++;
+            if (parentCounter == parents.length-2) {
+                parentCounter = 0;
             }
         }
-        population = newGeneration;
+        this.population = newPopulation;
     }
+
 
     private Ant[] selectParents() {
-
-        List<Ant> livingAnts = new ArrayList<>();
-
-        for (int i = 0; i < populationSize; i++) {
-            if(!(population[i].isQueen())&&population[i].isAlive()&&(!(population[i]==null))) {
-                livingAnts.add(population[i]);
-            }
+        queens = queens.stream().sorted(Comparator.comparingInt(Ant::getAccCost)).toList();
+        Ant[] parents = new Ant[queens.size()];
+        for (int i = 0; i < parents.length; i++) {
+            parents[i] = queens.get(i);
         }
-        livingAnts = livingAnts.stream().sorted(Comparator.comparingInt(Ant::getAccCost)).toList();
-//
-        Ant[] returnAnts = new Ant[livingAnts.size()];
-        for (int i = 0; i < livingAnts.size(); i++) {
-            returnAnts[i] = livingAnts.get(i);
-        }
-
-        return returnAnts;
+        return parents;
     }
+
 }
