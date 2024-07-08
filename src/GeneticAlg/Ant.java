@@ -18,10 +18,10 @@ public class Ant {
     private LNode[] visitedNodes; // Path so far
     private int visitedEdgesIndex; // Pointer to next space in edges array
     private LEdge[] visitedEdges; // Path so far
-    private boolean alive = true; // Is the ant stuck?
+    private boolean alive; // Is the ant stuck?
     private final LGraph graph;
     private final String id;
-    private boolean isQueen = false;
+    private boolean isQueen;
 
     public Ant(LGraph graph, int id) {
         Random rand = new Random();
@@ -35,6 +35,9 @@ public class Ant {
         this.visitedEdgesIndex = 0;
         this.accCost = 0;
         this.id = "Ant " + id;
+        this.alive = true;
+        this.isQueen = false;
+
     }
 
     public Ant(Ant parentAnt, int generation) {
@@ -47,6 +50,8 @@ public class Ant {
         this.visitedEdgesIndex = parentAnt.visitedEdgesIndex;
         this.accCost = parentAnt.accCost;
         this.id = String.valueOf(generation);
+        this.alive = true;
+        this.isQueen = false;
     }
 
     ///////// PUBLIC ////////
@@ -87,10 +92,11 @@ public class Ant {
                 }
             }
         }
-        if (!foundOne) {
+        updateAnt(chosenEdge, chosenNode);
+        if (!alive&&!isQueen) {
             System.out.println("          ANT: " + id + " DIED! ");
         }
-        updateAnt(chosenEdge, chosenNode);
+
         if (isQueen) {
             System.out.println("\n          A Queen was found!");
             System.out.println("          Ant: " + this.getid() + ", Code: " + this.getAccCost() + "\n");

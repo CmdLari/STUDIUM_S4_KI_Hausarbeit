@@ -44,7 +44,7 @@ public class Algorithm {
         queens = queens.stream().sorted(Comparator.comparingInt(Ant::getAccCost)).toList();
 
         if (!queens.isEmpty()) {
-            System.out.println("          The competing queens: ");
+            System.out.println("          The competing queens ("+queens.size()+"): ");
             for (Ant queen : queens) {
                 System.out.print("          Queen: "+queen.getid()+", Cost: "+queen.getAccCost());
             }
@@ -54,11 +54,12 @@ public class Algorithm {
         }
     }
 
-    public void updateQueens(Ant queen) {
-        this.queens.add(queen);
-    }
 
     ///////// PRIVATE ///////
+
+    private void updateQueens(Ant queen) {
+        this.queens.add(queen);
+    }
 
     private void thePopulationMarches() {
         for (int i = 0; i < populationSize; i++) {
@@ -96,12 +97,21 @@ public class Algorithm {
     }
 
     private Ant[] selectParents() {
-        Ant[] livingAnts = Arrays.stream(population)
-                .filter(ant -> ant != null && ant.isAlive() && !ant.isQueen())
-                .toArray(Ant[]::new);
 
-        return Arrays.stream(livingAnts)
-                .sorted(Comparator.comparingInt(Ant::getAccCost))
-                .toArray(Ant[]::new);
+        List<Ant> livingAnts = new ArrayList<>();
+
+        for (int i = 0; i < populationSize; i++) {
+            if(!(population[i].isQueen())&&population[i].isAlive()&&(!(population[i]==null))) {
+                livingAnts.add(population[i]);
+            }
+        }
+        livingAnts = livingAnts.stream().sorted(Comparator.comparingInt(Ant::getAccCost)).toList();
+//
+        Ant[] returnAnts = new Ant[livingAnts.size()];
+        for (int i = 0; i < livingAnts.size(); i++) {
+            returnAnts[i] = livingAnts.get(i);
+        }
+
+        return returnAnts;
     }
 }
