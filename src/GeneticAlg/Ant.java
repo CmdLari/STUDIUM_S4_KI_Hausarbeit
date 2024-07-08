@@ -3,6 +3,7 @@ import GraphMaker.LGraph;
 import GraphMaker.LEdge;
 import GraphMaker.LNode;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Ant {
@@ -35,7 +36,7 @@ public class Ant {
         this.visitedEdges = new LEdge[graph.edges.length];
         this.visitedEdgesIndex = 0;
         this.accCost = 0;
-        this.id = "Ant: "+"id";
+        this.id = "Ant "+id;
     }
 
     /**
@@ -66,7 +67,7 @@ public class Ant {
 
         for (LEdge lEdge : edgesToChoseFrom) {
             if (!(lEdge==null)){
-                if (!checkIfVisitedEdge(lEdge) && (lEdge.getCost() < cheapest || (cheapest==-5))) {
+                if (checkIfVisitedEdge(lEdge) && (lEdge.getCost() < cheapest || (cheapest==-5))) {
                     tempEdge = lEdge;
                     for (LNode lNode : tempEdge.getNodes()) {
                         if (!(lNode.Lequals(this.currentNode))&&!(checkifVisitedNode(lNode))) {
@@ -80,6 +81,7 @@ public class Ant {
                                 chosenEdge = lEdge;
                                 cheapest = lEdge.getCost();
                                 chosenNode = lNode;
+                                isQueen = true;
                                 alive = true;
                             }
                         }
@@ -100,7 +102,7 @@ public class Ant {
         boolean foundOne = false;
         while (!foundOne){
             int picker = rand.nextInt(edgesToChoseFrom.length-1);
-            if (!checkIfVisitedEdge(edgesToChoseFrom[picker])&&(edgesToChoseFrom[picker]!=null)) {
+            if (checkIfVisitedEdge(edgesToChoseFrom[picker]) &&(edgesToChoseFrom[picker]!=null)) {
                 tempEdge = edgesToChoseFrom[picker];
                 for (LNode lNode : tempEdge.getNodes()) {
                     if (!(lNode.Lequals(this.currentNode))&&!(checkifVisitedNode(lNode))) {
@@ -114,26 +116,16 @@ public class Ant {
                             chosenEdge = edgesToChoseFrom[picker];
                             alive = true;
                             foundOne = true;
+                            isQueen = true;
                         }
                     }
                 }
             }
         }
         updateAnt(chosenEdge, chosenNode);
-    }
-
-    private void updateAnt(LEdge chosenEdge, LNode chosenNode) {
-        if (alive) {
-            System.out.println("Bob walked "+chosenEdge.toString());
-            this.visitedEdges[visitedEdgesIndex] = chosenEdge;
-            visitedEdgesIndex++;
-            this.currentNode = chosenNode;
-            this.visitedNodes[visitedNodesIndex] = this.currentNode;
-            visitedNodesIndex++;
-            this.accCost += chosenEdge.getCost();
-        }
-        else {
-            System.out.println("Bob died!");
+        if(isQueen){
+            System.out.println("\n          A Queen was found!");
+            System.out.println("          Cost: "+this.getAccCost() + ", " + Arrays.toString(this.getVisitedEdges())+"\n");
         }
     }
 
@@ -169,16 +161,31 @@ public class Ant {
 
     ///////// PRIVATE //////
 
+    private void updateAnt(LEdge chosenEdge, LNode chosenNode) {
+        if (alive) {
+            System.out.println("          :::::"+id+" walked "+chosenEdge.toString());
+            this.visitedEdges[visitedEdgesIndex] = chosenEdge;
+            visitedEdgesIndex++;
+            this.currentNode = chosenNode;
+            this.visitedNodes[visitedNodesIndex] = this.currentNode;
+            visitedNodesIndex++;
+            this.accCost += chosenEdge.getCost();
+        }
+        if(!alive) {
+            System.out.println("!!!BOB DIED!!!");
+        }
+    }
+
     private boolean checkIfVisitedEdge(LEdge edge) {
         for (LEdge visitedEdge : visitedEdges) {
             if (visitedEdge==null){
-                return false;
-            }
-            if(visitedEdge.equals(edge)){
                 return true;
             }
+            if(visitedEdge.equals(edge)){
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 
     private boolean checkifVisitedNode(LNode node) {
@@ -203,8 +210,6 @@ public class Ant {
             }
         }
         if(counter==graph.nodes.length){
-            System.out.println("Found a Queen!");
-            isQueen = true;
             return true;
         }
         return false;

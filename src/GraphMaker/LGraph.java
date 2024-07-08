@@ -24,12 +24,12 @@ public class LGraph {
     private void generateGraph(int MAXNODES, int MAXEDGES, int MAXEDGECOST) {
         Random rand = new Random();
 
-        System.out.println("INITIALIZING GRAPH");
+        System.out.println("          INITIALIZING GRAPH");
 
         // How many nodes?
         int nodeNumber = rand.nextInt(3, MAXNODES);
         nodes = new LNode[nodeNumber];
-        System.out.println("Number of Nodes: " + nodeNumber);
+        System.out.println("          Number of Nodes: " + nodeNumber);
 
         // create nodes
         for (int i = 0; i < nodeNumber; i++) {
@@ -40,7 +40,7 @@ public class LGraph {
         // How many edges?
         int edgeNumber = rand.nextInt(nodeNumber, MAXEDGES);
         edges = new LEdge[edgeNumber];
-        System.out.println("Number of Edges: " + edgeNumber);
+        System.out.println("          Number of Edges: " + edgeNumber);
 
         // create edges
         for (int i = 0; i < edgeNumber; i++) {
@@ -56,22 +56,22 @@ public class LGraph {
         // // Initialize chain
         edges[edgePointer].addNode(nodes[edgePointer]);
         nodes[edgePointer].setEdge(edges[edgePointer]);
-        System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[edgePointer].toString());
+        System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[edgePointer].toString());
 
         // // Ensure there is at least one functional route
         for (edgePointer=1; edgePointer < nodeNumber; edgePointer++) {
             edges[edgePointer-1].addNode(nodes[edgePointer]);
             nodes[edgePointer].setEdge(edges[edgePointer-1]);
-            System.out.println("Connected: "+edges[edgePointer-1].toString()+" with "+nodes[edgePointer].toString());
+            System.out.println("          :::::Connected: "+edges[edgePointer-1].toString()+" with "+nodes[edgePointer].toString());
 
             edges[edgePointer].addNode(nodes[edgePointer]);
             nodes[edgePointer].setEdge(edges[edgePointer]);
-            System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[edgePointer].toString());
+            System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[edgePointer].toString());
 
             if (edgePointer==nodeNumber-1) {
                 edges[edgePointer].addNode(nodes[0]);
                 nodes[0].setEdge(edges[edgePointer]);
-                System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[0].toString());
+                System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[0].toString());
             }
         }
 
@@ -81,11 +81,11 @@ public class LGraph {
             int nodeTwo = rand.nextInt(0, nodeNumber-1);
             edges[edgePointer].addNode(nodes[nodeOne]);
             nodes[nodeOne].setEdge(edges[edgePointer]);
-            System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[nodeOne].toString());
+            System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[nodeOne].toString());
 
             edges[edgePointer].addNode(nodes[nodeTwo]);
             nodes[nodeTwo].setEdge(edges[edgePointer]);
-            System.out.println("Connected: "+edges[edgePointer].toString()+" with "+nodes[nodeTwo].toString());
+            System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[nodeTwo].toString());
             edgePointer++;
         }
     }
