@@ -8,6 +8,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GraphVisualizer {
@@ -23,7 +24,7 @@ public class GraphVisualizer {
                 "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
         // Add nodes to the GraphStream graph
-        for (int i = 0; i < lGraph.nodes.length; i++) {
+        for (int i = 0; i < lGraph.nodes.size(); i++) {
             graph.addNode("Node" + i);
         }
 
@@ -31,10 +32,10 @@ public class GraphVisualizer {
         Map<String, Integer> edgeCountMap = new HashMap<>();
 
         // Add edges to the GraphStream graph
-        for (int i = 0; i < lGraph.edges.length; i++) {
-            LEdge edge = lGraph.edges[i];
-            LNode leftNode = edge.getNodes()[0];
-            LNode rightNode = edge.getNodes()[1];
+        for (int i = 0; i < lGraph.edges.size(); i++) {
+            LEdge edge = lGraph.edges.get(i);
+            LNode leftNode = edge.getNodes().get(0);
+            LNode rightNode = edge.getNodes().get(1);
             int leftNodeIndex = findNodeIndex(lGraph, leftNode);
             int rightNodeIndex = findNodeIndex(lGraph, rightNode);
 
@@ -78,8 +79,8 @@ public class GraphVisualizer {
     }
 
     private static int findNodeIndex(LGraph lGraph, LNode node) {
-        for (int i = 0; i < lGraph.nodes.length; i++) {
-            if (lGraph.nodes[i] == node) {
+        for (int i = 0; i < lGraph.nodes.size(); i++) {
+            if (lGraph.nodes.get(i) == node) {
                 return i;
             }
         }
@@ -110,7 +111,7 @@ public class GraphVisualizer {
         graph.display();
     }
 
-    public static void colorWinningRoute(LGraph lGraph, LEdge[] winningRoute, Graph graph) {
+    public static void colorWinningRoute(LGraph lGraph, List<LEdge> winningRoute, Graph graph) {
         if (winningRoute != null) {
             // Set hasBeenWalked attribute to true for winning route edges
             for (LEdge lEdge : winningRoute) {
@@ -119,8 +120,8 @@ public class GraphVisualizer {
 
             // Update the GraphStream graph to reflect the changes
             for (LEdge edge : winningRoute) {
-                int leftNodeIndex = findNodeIndex(lGraph, edge.getNodes()[0]);
-                int rightNodeIndex = findNodeIndex(lGraph, edge.getNodes()[1]);
+                int leftNodeIndex = findNodeIndex(lGraph, edge.getNodes().get(0));
+                int rightNodeIndex = findNodeIndex(lGraph, edge.getNodes().get(1));
 
                 if (leftNodeIndex != -1 && rightNodeIndex != -1) {
                     String node1Id = "Node" + leftNodeIndex;
