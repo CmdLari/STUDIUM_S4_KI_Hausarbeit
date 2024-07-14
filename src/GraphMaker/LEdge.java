@@ -1,21 +1,25 @@
 package GraphMaker;
 
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.*;
 
 public class LEdge {
-    LNode[] nodes;
+    List<LNode> nodes;
     int cost;
     String id;
     boolean isSet;
     boolean inWinningRoute;
     boolean hasBeenTried; // New attribute
 
-    public LEdge(int id, int MAXCOST) {
-        this.nodes = new LNode[2];
+    public LEdge(int id, int MAXCOST, LNode zero, LNode one) {
+        this.nodes = new ArrayList<LNode>();
+        this.nodes.add(zero);
+        this.nodes.add(one);
         this.cost = 0;
         this.id = "Edge: " + id;
         Random rand = new Random();
-        this.cost = rand.nextInt(1, MAXCOST);
+        this.cost = rand.nextInt(0, MAXCOST);
         this.isSet = false;
         this.inWinningRoute = false;
         this.hasBeenTried = false; // For visualisation only
@@ -27,16 +31,14 @@ public class LEdge {
         return id;
     }
 
-    public LNode[] getNodes() {
+    public List<LNode> getNodes() {
         return nodes;
     }
 
     public void addNode(LNode node) {
-        int placement = checkAvailability();
-        if (!(placement == 99)) {
-            nodes[placement] = node;
-        }
+        nodes.add(node);
     }
+
 
     public boolean Leguals(LEdge lEdge) {
         if (lEdge == null) {
@@ -45,10 +47,7 @@ public class LEdge {
         return this.id.equals(lEdge.id);
     }
 
-    public boolean isSet() {
-        return isSet;
-    }
-
+    @Override
     public String toString() {
         return id + "(cost: " + cost + ")";
     }
@@ -74,13 +73,4 @@ public class LEdge {
     }
 
     ///////// PRIVATE ///////
-
-    private int checkAvailability() {
-        for (int i = 0; i < nodes.length; i++) {
-            if (nodes[i] == null) {
-                return i;
-            }
-        }
-        return 99;
-    }
 }

@@ -1,8 +1,11 @@
 package GraphMaker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LNode {
 
-    LEdge[] edges = new LEdge[2];
+    List<LEdge> edges = new ArrayList<LEdge>();
     String id;
 
     public LNode(int id) {
@@ -15,14 +18,14 @@ public class LNode {
         return id;
     }
 
-    public LEdge[] getEdges(){
+    public List<LEdge> getEdges(){
         return edges;
     }
 
     public void setEdge(LEdge lEdge){
         checkEdgeArray();
         int placement = checkAvailability();
-        edges[placement] = lEdge;
+        edges.add(lEdge);
     }
 
     public boolean equals(LNode lNode){
@@ -30,6 +33,7 @@ public class LNode {
         return this.id.equals(lNode.id);
     }
 
+    @Override
     public String toString(){
         return id;
     }
@@ -44,19 +48,15 @@ public class LNode {
                 counter++;
             }
         }
-        if (counter>=edges.length/2){
-            LEdge[] newEdges = new LEdge[edges.length*2];
-            for (int i = 0; i < edges.length; i++) {
-                newEdges[i]=edges[i];
-            }
-            this.edges = newEdges;
+        if (counter>=edges.size()/2){
+            this.edges = new ArrayList<LEdge>(edges);
         }
     }
 
     private int checkAvailability(){
         int counter;
-        for (counter=0; counter < edges.length; counter++) {
-            if (edges[counter] == null) {
+        for (counter=0; counter < edges.size(); counter++) {
+            if (edges.get(counter) == null) {
                 return counter;
             }
         }

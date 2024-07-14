@@ -1,5 +1,7 @@
 package GraphMaker;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 // UNDIRECTED
@@ -9,11 +11,13 @@ import java.util.Random;
 
 public class LGraph {
 
-    public LNode[] nodes;
-    public LEdge[] edges;
+    public List<LNode> nodes;
+    public List<LEdge> edges;
 
-    public LGraph(int MAXNODES, int MAXEDGES, int MAXEDGECOST) {
-        generateGraph(MAXNODES, MAXEDGES, MAXEDGECOST);
+    public LGraph(int MAXNODES, int MAXEDGECOST) {
+        this.edges = new ArrayList<LEdge>();
+        this.nodes = new ArrayList<LNode>();
+        generateGraph(MAXNODES, MAXEDGECOST);
     }
 
     ///////// PUBLIC ////////
@@ -21,72 +25,48 @@ public class LGraph {
 
     ///////// PRIVATE ///////
 
-    private void generateGraph(int MAXNODES, int MAXEDGES, int MAXEDGECOST) {
+    private void generateGraph(int NODENUMBER, int MAXEDGECOST) {
         Random rand = new Random();
 
         System.out.println("          INITIALIZING GRAPH");
 
         // How many nodes?
-        int nodeNumber = rand.nextInt(3, MAXNODES);
-        nodes = new LNode[nodeNumber];
-        System.out.println("          Number of Nodes: " + nodeNumber);
+        System.out.println("          Number of Nodes: " + NODENUMBER);
 
         // create nodes
-        for (int i = 0; i < nodeNumber; i++) {
+        for (int i = 0; i < NODENUMBER; i++) {
             LNode newNode = new LNode(i);
-            nodes[i] = newNode;
+            nodes.add(newNode);
         }
 
-        // How many edges?
-        int edgeNumber = rand.nextInt(nodeNumber, MAXEDGES);
-        edges = new LEdge[edgeNumber];
-        System.out.println("          Number of Edges: " + edgeNumber);
+        int idCounter = 0;
 
-        // create edges
-        for (int i = 0; i < edgeNumber; i++) {
-            LEdge newEdge = new LEdge(i, MAXEDGECOST);
-            edges[i] = newEdge;
-        }
-
-        // connect edges and nodes
-
-        int edgePointer = 0;
-        System.out.print("\n");
-
-        // // Initialize chain
-        edges[edgePointer].addNode(nodes[edgePointer]);
-        nodes[edgePointer].setEdge(edges[edgePointer]);
-        System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[edgePointer].toString());
-
-        // // Ensure there is at least one functional route
-        for (edgePointer=1; edgePointer < nodeNumber; edgePointer++) {
-            edges[edgePointer-1].addNode(nodes[edgePointer]);
-            nodes[edgePointer].setEdge(edges[edgePointer-1]);
-            System.out.println("          :::::Connected: "+edges[edgePointer-1].toString()+" with "+nodes[edgePointer].toString());
-
-            edges[edgePointer].addNode(nodes[edgePointer]);
-            nodes[edgePointer].setEdge(edges[edgePointer]);
-            System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[edgePointer].toString());
-
-            if (edgePointer==nodeNumber-1) {
-                edges[edgePointer].addNode(nodes[0]);
-                nodes[0].setEdge(edges[edgePointer]);
-                System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[0].toString());
+        // create edges and connect all nodes with each other
+        for (LNode node : nodes) {
+            for (LNode nodeOther : nodes) {
+                if (!nodeOther.equals(node)) {
+                    if (nodeOther.getEdges().stream().noneMatch(e -> e.getNodes().contains(node))) {
+                        LEdge newEdge = new LEdge(idCounter, rand.nextInt(1, MAXEDGECOST), node, nodeOther);
+                        node.setEdge(newEdge);
+                        nodeOther.setEdge(newEdge);
+                        this.edges.add(newEdge);
+//                        System.out.println("          :::::Connected: "+node.toString()+" with "+nodeOther.toString());
+                    }
+                }
             }
         }
+        System.out.println("          Number of Edges: " + edges.size());
 
-        // // Insert the remaining edges
-        while (edgePointer < edgeNumber) {
-            int nodeOne = rand.nextInt(0, nodeNumber-1);
-            int nodeTwo = rand.nextInt(0, nodeNumber-1);
-            edges[edgePointer].addNode(nodes[nodeOne]);
-            nodes[nodeOne].setEdge(edges[edgePointer]);
-            System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[nodeOne].toString());
 
-            edges[edgePointer].addNode(nodes[nodeTwo]);
-            nodes[nodeTwo].setEdge(edges[edgePointer]);
-            System.out.println("          :::::Connected: "+edges[edgePointer].toString()+" with "+nodes[nodeTwo].toString());
-            edgePointer++;
+        System.out.print("\n");
+    }
+
+    public LEdge findEdge(LNode lNode, LNode lNode1) {
+        for (LEdge edge : edges) {
+            if (edge.getNodes().contains(lNode) && edge.getNodes().contains(lNode1)) {
+                return edge;
+            }
         }
+        return null;
     }
 }
