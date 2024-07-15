@@ -50,6 +50,7 @@ public class LGraph {
                         node.setEdge(newEdge);
                         nodeOther.setEdge(newEdge);
                         this.edges.add(newEdge);
+                        idCounter++;
 //                        System.out.println("          :::::Connected: "+node.toString()+" with "+nodeOther.toString());
                     }
                 }

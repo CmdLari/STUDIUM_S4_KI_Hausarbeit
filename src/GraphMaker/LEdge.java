@@ -16,10 +16,9 @@ public class LEdge {
         this.nodes = new ArrayList<LNode>();
         this.nodes.add(zero);
         this.nodes.add(one);
-        this.cost = 0;
         this.id = "Edge: " + id;
         Random rand = new Random();
-        this.cost = rand.nextInt(0, MAXCOST);
+        this.cost = rand.nextInt(1, MAXCOST+1);
         this.isSet = false;
         this.inWinningRoute = false;
         this.hasBeenTried = false; // For visualisation only
