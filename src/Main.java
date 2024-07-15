@@ -14,11 +14,11 @@ import org.graphstream.graph.Graph;
 public class Main {
     public static void main(String[] args) {
 
-        int NODENUMBER = 10;
+        int NODENUMBER = 20;
         int MAXEDGECOST = 10;
-        double SELECTIONRATE = 0.7;
-        int POPULATIONSIZE = 20;
-        int GENERATIONCOUNT = 20;
+        double SELECTIONRATE = 0.4;
+        int POPULATIONSIZE = 200;
+        int GENERATIONCOUNT = 200;
 
         // Initialize Graph
         LGraph lGraph = new LGraph(NODENUMBER, MAXEDGECOST);

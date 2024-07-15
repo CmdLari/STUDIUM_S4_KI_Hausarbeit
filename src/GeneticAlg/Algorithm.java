@@ -7,6 +7,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+// V1 -> parents are selection rate X populationsize from the sorted population (sorted by cost/distance)
+// V2 -> We save the best individual of each generation to avoid losing potentially better routes along the way
+// V3 -> former winners are included in the parents
+
+
 public class Algorithm {
     double selectionRate;
     LGraph graph;
