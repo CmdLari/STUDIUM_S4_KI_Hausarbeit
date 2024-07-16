@@ -28,10 +28,10 @@ public class LGraph {
     private void generateGraph(int NODENUMBER, int MAXEDGECOST) {
         Random rand = new Random();
 
-        System.out.println("          INITIALIZING GRAPH");
+//        System.out.println("          INITIALIZING GRAPH");
 
         // How many nodes?
-        System.out.println("          Number of Nodes: " + NODENUMBER);
+//        System.out.println("          Number of Nodes: " + NODENUMBER);
 
         // create nodes
         for (int i = 0; i < NODENUMBER; i++) {
@@ -56,7 +56,7 @@ public class LGraph {
                 }
             }
         }
-        System.out.println("          Number of Edges: " + edges.size());
+//        System.out.println("          Number of Edges: " + edges.size());
 
 
         System.out.print("\n");

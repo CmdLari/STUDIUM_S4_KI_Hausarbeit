@@ -1,4 +1,4 @@
-package GeneticAlg;
+package GeneticAlg_withTerminal;
 
 import GraphMaker.LGraph;
 import GraphMaker.LEdge;

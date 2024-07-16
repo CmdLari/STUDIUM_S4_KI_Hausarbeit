@@ -1,6 +1,6 @@
 package Visualisation;
 
-import GeneticAlg.Ant;
+import GeneticAlg_withTerminal.Ant;
 import GraphMaker.LGraph;
 import GraphMaker.LEdge;
 import GraphMaker.LNode;

@@ -1,4 +1,4 @@
-package GeneticAlg;
+package GeneticAlg_withTerminal;
 
 import GraphMaker.LGraph;
 
@@ -12,24 +12,22 @@ import java.util.List;
 // V3 -> former winners are included in the parents
 
 
-public class Algorithm {
+public class Algorithm_v1 {
     double selectionRate;
     LGraph graph;
     int populationSize;
     int generationCount;
     int generationNr;
     List<Ant> population;
-    List<Ant> queens;
     Ant queen;
 
-    public Algorithm(double selectionRate, LGraph graph, int populationSize, int generationCount) {
+    public Algorithm_v1(double selectionRate, LGraph graph, int populationSize, int generationCount) {
         this.selectionRate = selectionRate;
         this.graph = graph;
         this.populationSize = populationSize;
         this.generationCount = generationCount;
         this.generationNr = 1;
-        this.population = new ArrayList<Ant>();
-        this.queens = new ArrayList<>();
+        this.population = new ArrayList<>();
         System.out.println("          ______________________________________________");
         generateInitialPopulation();
         System.out.println("          ______________________________________________");
@@ -38,10 +36,6 @@ public class Algorithm {
     }
 
     /////// PUBLIC ////////
-
-    public Ant getWinner(){
-        return queen;
-    }
 
 
     ///////// PRIVATE ///////
@@ -93,7 +87,6 @@ public class Algorithm {
 
     private void processResults(){
         Ant cheapestAnt = population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0);
-        queens.add(cheapestAnt);
         int cheapestPath = cheapestAnt.getAccCost();
         int accCost = 0;
         for (Ant ant : population){
@@ -107,7 +100,7 @@ public class Algorithm {
 
     }
     private void crownQueen(){
-        this.queen = queens.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0);
+        this.queen = population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0);
         System.out.println("          ~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~");
         System.out.println("          The Cheapest Route Found: "+queen.getAccCost()+" "+queen.toString());
         System.out.println("          ~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~+*+~");
