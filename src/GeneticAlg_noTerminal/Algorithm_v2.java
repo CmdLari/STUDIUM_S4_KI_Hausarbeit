@@ -21,8 +21,17 @@ public class Algorithm_v2 {
     int generationNr;
     List<Ant> population;
     List<Ant> queens;
-    Ant queen;
+    public Ant queen;
     int accCost = 0;
+    List<Integer> genCost = new ArrayList<>();
+    List <Double> avgGenCostRatio = new ArrayList<>();
+    public Double genCostRatio = 0.0;
+    List<Integer> bestCost = new ArrayList<>();
+    List<Double> avgbestCostRatio = new ArrayList<>();
+    public Double bestCostRatio = 0.0;
+    Ant bestAnt;
+    public double bestAntRatio = 0.0;
+
 
     public Algorithm_v2(double selectionRate, LGraph graph, int populationSize, int generationCount) {
         this.selectionRate = selectionRate;
@@ -37,6 +46,9 @@ public class Algorithm_v2 {
 //        System.out.println("          ______________________________________________");
         runAlg();
         crownQueen();
+        genCostRatio = avgGenCostRatio.stream().mapToDouble(Double::doubleValue).sum()/generationCount;
+        bestCostRatio = avgbestCostRatio.stream().mapToDouble(Double::doubleValue).sum()/generationCount;
+        bestAntRatio = (double) population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0).getAccCost()/bestAnt.getAccCost();
     }
 
     /////// PUBLIC ////////
@@ -53,6 +65,10 @@ public class Algorithm_v2 {
             for (generationNr = 2; generationNr <= generationCount; generationNr++) {
                 generateNextPopulation(generateParents());
                 processResults();
+                genCost.add(accCost);
+                avgGenCostRatio.add(Double.valueOf(genCost.get(generationNr-1))/Double.valueOf(genCost.get(generationNr-2)));
+                bestCost.add(population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0).getAccCost());
+                avgbestCostRatio.add((double) (bestCost.get(generationNr - 1) / bestCost.get(generationNr - 2)));
             }
         }
     }
@@ -63,6 +79,9 @@ public class Algorithm_v2 {
             population.add(newAnt);
         }
         processResults();
+        genCost.add(accCost);
+        bestCost.add(population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0).getAccCost());
+        bestAnt = population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0);
     }
 
     private List<Ant> generateParents(){

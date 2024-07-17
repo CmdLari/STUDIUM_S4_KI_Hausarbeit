@@ -28,6 +28,8 @@ public class Algorithm_v1 {
     List<Integer> bestCost = new ArrayList<>();
     List<Double> avgbestCostRatio = new ArrayList<>();
     public Double bestCostRatio = 0.0;
+    Ant bestAnt;
+    public double bestAntRatio = 0.0;
 
 
     public Algorithm_v1(double selectionRate, LGraph graph, int populationSize, int generationCount) {
@@ -44,6 +46,7 @@ public class Algorithm_v1 {
         crownQueen();
         genCostRatio = avgGenCostRatio.stream().mapToDouble(Double::doubleValue).sum()/generationCount;
         bestCostRatio = avgbestCostRatio.stream().mapToDouble(Double::doubleValue).sum()/generationCount;
+        bestAntRatio = (double) population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0).getAccCost()/bestAnt.getAccCost();
     }
 
     /////// PUBLIC ////////
@@ -72,6 +75,7 @@ public class Algorithm_v1 {
         processResults();
         genCost.add(accCost);
         bestCost.add(population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0).getAccCost());
+        bestAnt = population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0);
     }
 
     private List<Ant> generateParents(){
