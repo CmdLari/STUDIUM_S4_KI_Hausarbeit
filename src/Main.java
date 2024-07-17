@@ -284,22 +284,22 @@ public class Main {
         System.out.println("          MEDIUM :: V1 : V2: " + (bestRoute_v1m/bestRoute_v2m)+" | V1 : V3: " + (bestRoute_v1m/bestRoute_v3m)+" | V2 : V3: " + (bestRoute_v2m/bestRoute_v3m));
         System.out.println("          LARGE  :: V1 : V2: " + (bestRoute_v1l/bestRoute_v2l)+" | V1 : V3: " + (bestRoute_v1l/bestRoute_v3l)+" | V2 : V3: " + (bestRoute_v2l/bestRoute_v3l));
 
-        /////////////////////Client for visuals////////////////
-
+//        /////////////////////Client for visuals////////////////
+//
 //        int NODENUMBER = 10;
 //        int POPULATIONSIZE = 20;
 //        int GENERATIONCOUNT = 200;
-
-
-        // Initialize Graph
+//
+//
+////      Initialize Graph
 //        LGraph lGraph = new LGraph(NODENUMBER, MAXEDGECOST);
-
-        // Initialize Algorithm_v2
-//        Algorithm_v3 algorithm = new Algorithm_v3(SELECTIONRATE, lGraph, POPULATIONSIZE, GENERATIONCOUNT);
-
-        // Visualize the graph, tried routes and shortest route
+//
+////      Initialize Algorithm_v2
+//        GeneticAlg_withTerminal.Algorithm_v3 algorithm = new GeneticAlg_withTerminal.Algorithm_v3(SELECTIONRATE, lGraph, POPULATIONSIZE, GENERATIONCOUNT);
+//
+////      Visualize the graph, tried routes and shortest route
 //        visualizeGraph(lGraph, algorithm.getWinner());
-
+//
     }
 
     /**
