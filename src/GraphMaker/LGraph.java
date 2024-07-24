@@ -25,6 +25,11 @@ public class LGraph {
 
     ///////// PRIVATE ///////
 
+    /**
+     * Generates a complete, undirected, weighted graph with n nodes
+     * @param NODENUMBER - Number n of the graph's nodes
+     * @param MAXEDGECOST - Maximum cost of any edge (random 0-MAXEDGECOST)
+     */
     private void generateGraph(int NODENUMBER, int MAXEDGECOST) {
         Random rand = new Random();
 
@@ -62,6 +67,12 @@ public class LGraph {
         System.out.print("\n");
     }
 
+    /**
+     * Public method to find an edge given the two nodes it is connecting
+     * @param lNode node the edge is connected to
+     * @param lNode1 node the edge is connected to
+     * @return
+     */
     public LEdge findEdge(LNode lNode, LNode lNode1) {
         for (LEdge edge : edges) {
             if (edge.getNodes().contains(lNode) && edge.getNodes().contains(lNode1)) {

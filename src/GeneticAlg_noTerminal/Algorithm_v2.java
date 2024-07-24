@@ -46,6 +46,9 @@ public class Algorithm_v2 {
 //        System.out.println("          ______________________________________________");
         runAlg();
         crownQueen();
+
+
+        // Numbers for evaluation - Not relevant to the algorithm itself
         genCostRatio = avgGenCostRatio.stream().mapToDouble(Double::doubleValue).sum()/generationCount;
         bestCostRatio = avgbestCostRatio.stream().mapToDouble(Double::doubleValue).sum()/generationCount;
         bestAntRatio = (double) population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0).getAccCost()/bestAnt.getAccCost();
@@ -65,6 +68,8 @@ public class Algorithm_v2 {
             for (generationNr = 2; generationNr <= generationCount; generationNr++) {
                 generateNextPopulation(generateParents());
                 processResults();
+
+                // Numbers for evaluation - Not relevant to the algorithm itself
                 genCost.add(accCost);
                 avgGenCostRatio.add(Double.valueOf(genCost.get(generationNr-1))/Double.valueOf(genCost.get(generationNr-2)));
                 bestCost.add(population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0).getAccCost());
@@ -79,6 +84,8 @@ public class Algorithm_v2 {
             population.add(newAnt);
         }
         processResults();
+
+        // Numbers for evaluation - Not relevant to the algorithm itself
         genCost.add(accCost);
         bestCost.add(population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0).getAccCost());
         bestAnt = population.stream().sorted(Comparator.comparing(Ant::getAccCost)).toList().get(0);
