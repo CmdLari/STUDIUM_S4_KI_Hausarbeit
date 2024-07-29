@@ -19,7 +19,7 @@ public class Algorithm_v1 {
     int generationCount;
     int generationNr;
     List<Ant> population;
-    Ant queen;
+    public Ant queen;
 
     public Algorithm_v1(double selectionRate, LGraph graph, int populationSize, int generationCount) {
         this.selectionRate = selectionRate;

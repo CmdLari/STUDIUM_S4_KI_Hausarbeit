@@ -26,23 +26,23 @@ public class Main {
         // Nr of trials for each: 100
 
 
-//        int NODENUMBER_small = 10;
-//        int POPULATIONSIZE_small = 10;
-//        int GENERATIONCOUNT_small = 10;
+//        int NODENUMBER_small = 20;
+//        int POPULATIONSIZE_small = 400;
+//        int GENERATIONCOUNT_small = 800;
 //        LGraph lGraphSmall = new LGraph(NODENUMBER_small, MAXEDGECOST);
 //
 //        int NODENUMBER_medium = 20;
-//        int POPULATIONSIZE_medium = 20;
-//        int GENERATIONCOUNT_medium = 20;
+//        int POPULATIONSIZE_medium = 800;
+//        int GENERATIONCOUNT_medium = 1600;
 //        LGraph lGraphMedium = new LGraph(NODENUMBER_medium, MAXEDGECOST);
 //
-//        int NODENUMBER_large = 40;
-//        int POPULATIONSIZE_large = 40;
-//        int GENERATIONCOUNT_large = 40;
+//        int NODENUMBER_large = 20;
+//        int POPULATIONSIZE_large = 1600;
+//        int GENERATIONCOUNT_large = 3200;
 //        LGraph lGraphLarge = new LGraph(NODENUMBER_large, MAXEDGECOST);
 //
 //
-//        int TRIALNUMBER = 200;
+        int TRIALNUMBER = 20;
 //
 //        System.out.println("          METRICS:");
 //        System.out.println("          TRIAL NUMBER: "+TRIALNUMBER);
@@ -202,10 +202,10 @@ public class Main {
 //        System.out.println("          V2 had an average improvement of the shortest route of each generation of " + (bestRatio_v2l/TRIALNUMBER));
 //        System.out.println("          V2 had an average improvement of the best route of " + (bestAntRatio_v2l/TRIALNUMBER));
 //        System.out.println("\n");
-//
-//
-//        ////// V3
-//        // Small
+
+
+        //// V3
+//         Small
 //        System.out.println("          __________VERSION 3___________");
 //        System.out.println("          ____________SMALL_____________");
 //
@@ -225,10 +225,10 @@ public class Main {
 //        long endTimev3_1 = System.currentTimeMillis();
 //        bestRoute_v3s = bestRoute_v3s/TRIALNUMBER;
 //
-//        System.out.println("          V2 had an average runtime of " + (endTimev3_1 - startTimev3_1)/100 + " ms");
-//        System.out.println("          V2 had an average improvement of the overall cost of the generation's routes of " + (costRatio_v3s/TRIALNUMBER));
-//        System.out.println("          V2 had an average improvement of the shortest route of each generation of " + (bestRatio_v3s/TRIALNUMBER));
-//        System.out.println("          V2 had an average improvement of the best route of " + (bestAntRatio_v3s/TRIALNUMBER));
+//        System.out.println("          V3 had an average runtime of " + (endTimev3_1 - startTimev3_1)/100 + " ms");
+//        System.out.println("          V3 had an average improvement of the overall cost of the generation's routes of " + (costRatio_v3s/TRIALNUMBER));
+//        System.out.println("          V3 had an average improvement of the shortest route of each generation of " + (bestRatio_v3s/TRIALNUMBER));
+//        System.out.println("          V3 had an average improvement of the best route of " + (bestAntRatio_v3s/TRIALNUMBER));
 //        System.out.println("\n");
 //
 //        System.out.println("          ____________MEDIUM____________");
@@ -249,11 +249,11 @@ public class Main {
 //        long endTimev3_2 = System.currentTimeMillis();
 //        bestRoute_v3m = bestRoute_v3m/TRIALNUMBER;
 //
-//        System.out.println("          V2 had an average runtime of " + (endTimev3_2 - startTimev3_2)/100 + " ms");
-//        System.out.println("          V2 had an average improvement of the overall cost of the generation's routes of " + (costRatio_v3m/TRIALNUMBER));
-//        System.out.println("          V2 had an average improvement of the shortest route of each generation of " + (bestRatio_v3m/TRIALNUMBER));
-//        System.out.println("          V2 had an average improvement of the best route of " + (bestAntRatio_v3m/TRIALNUMBER));
-//        System.out.println("\n");
+//        System.out.println("          V3 had an average runtime of " + (endTimev3_2 - startTimev3_2)/100 + " ms");
+//        System.out.println("          V3 had an average improvement of the overall cost of the generation's routes of " + (costRatio_v3m/TRIALNUMBER));
+//        System.out.println("          V3 had an average improvement of the shortest route of each generation of " + (bestRatio_v3m/TRIALNUMBER));
+//        System.out.println("          V3 had an average improvement of the best route of " + (bestAntRatio_v3m/TRIALNUMBER));
+////        System.out.println("\n");
 //
 //        System.out.println("          ____________LARGE____________");
 //
@@ -273,32 +273,32 @@ public class Main {
 //        long endTimev3_3 = System.currentTimeMillis();
 //        bestRoute_v3l = bestRoute_v3l/TRIALNUMBER;
 //
-//        System.out.println("          V2 had an average runtime of " + (endTimev3_3 - startTimev3_3)/100 + " ms");
-//        System.out.println("          V2 had an average improvement of the overall cost of the generation's routes of " + (costRatio_v3l/TRIALNUMBER));
-//        System.out.println("          V2 had an average improvement of the shortest route of each generation of " + (bestRatio_v3l/TRIALNUMBER));
-//        System.out.println("          V2 had an average improvement of the best route of " + (bestAntRatio_v3l/TRIALNUMBER));
+//        System.out.println("          V3 had an average runtime of " + (endTimev3_3 - startTimev3_3)/100 + " ms");
+//        System.out.println("          V3 had an average improvement of the overall cost of the generation's routes of " + (costRatio_v3l/TRIALNUMBER));
+//        System.out.println("          V3 had an average improvement of the shortest route of each generation of " + (bestRatio_v3l/TRIALNUMBER));
+//        System.out.println("          V3 had an average improvement of the best route of " + (bestAntRatio_v3l/TRIALNUMBER));
 //        System.out.println("\n");
-//
-//
+
+
 //        System.out.println("          SMALL  :: V1 : V2: " + (bestRoute_v1s/bestRoute_v2s)+" | V1 : V3: " + (bestRoute_v1s/bestRoute_v3s)+" | V2 : V3: " + (bestRoute_v2s/bestRoute_v3s));
 //        System.out.println("          MEDIUM :: V1 : V2: " + (bestRoute_v1m/bestRoute_v2m)+" | V1 : V3: " + (bestRoute_v1m/bestRoute_v3m)+" | V2 : V3: " + (bestRoute_v2m/bestRoute_v3m));
 //        System.out.println("          LARGE  :: V1 : V2: " + (bestRoute_v1l/bestRoute_v2l)+" | V1 : V3: " + (bestRoute_v1l/bestRoute_v3l)+" | V2 : V3: " + (bestRoute_v2l/bestRoute_v3l));
 
         /////////////////////Client for visuals////////////////
 
-        int NODENUMBER = 5;
-        int POPULATIONSIZE = 20;
-        int GENERATIONCOUNT = 1;
+        int NODENUMBER = 10;
+        int POPULATIONSIZE = 5;
+        int GENERATIONCOUNT = 5;
 
 
 //      Initialize Graph
         LGraph lGraph = new LGraph(NODENUMBER, MAXEDGECOST);
 
 //      Initialize Algorithm_v2
-        GeneticAlg_withTerminal.Algorithm_v3 algorithm = new GeneticAlg_withTerminal.Algorithm_v3(SELECTIONRATE, lGraph, POPULATIONSIZE, GENERATIONCOUNT);
+        GeneticAlg_withTerminal.Algorithm_v2 algorithm = new GeneticAlg_withTerminal.Algorithm_v2(SELECTIONRATE, lGraph, POPULATIONSIZE, GENERATIONCOUNT);
 
 //      Visualize the graph, tried routes and shortest route
-        visualizeGraph(lGraph, null);
+        visualizeGraph(lGraph, algorithm.getWinner());
 
     }
 

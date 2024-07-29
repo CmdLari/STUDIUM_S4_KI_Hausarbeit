@@ -14,10 +14,6 @@ public class LNode {
 
     ///////// PUBLIC ////////
 
-    public String getId() {
-        return id;
-    }
-
     public List<LEdge> getEdges(){
         return edges;
     }

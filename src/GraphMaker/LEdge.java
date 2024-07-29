@@ -26,24 +26,8 @@ public class LEdge {
 
     ///////// PUBLIC ////////
 
-    public String getID() {
-        return id;
-    }
-
     public List<LNode> getNodes() {
         return nodes;
-    }
-
-    public void addNode(LNode node) {
-        nodes.add(node);
-    }
-
-
-    public boolean Leguals(LEdge lEdge) {
-        if (lEdge == null) {
-            return false;
-        }
-        return this.id.equals(lEdge.id);
     }
 
     @Override
